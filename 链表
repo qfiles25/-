@@ -1,0 +1,86 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct student{
+	int no;
+	struct student *next;
+}link;
+void create_node(link *p){
+	int no;
+	printf("请输入学号(输入0退出):");
+	scanf("%d",&no);
+	while(no>0){
+	    link *temp=(link*)malloc(sizeof(link));
+    	temp->no=no;
+    	temp->next=NULL;
+    	p->next=temp;
+    	p=temp;
+    	printf("请输入学号:");
+    	scanf("%d",&no);
+    }
+}
+void show(link *head){
+	link *p=head->next;
+	while(p!=NULL){
+		printf("%d\n",p->no);
+		p=p->next;
+	}
+}
+void sss(link *head,int no){
+	link *p=head;
+	while(p->next!=NULL){
+		if(p->next->no==no){
+			link *del=p->next;
+			p->next=p->next->next;
+			free(del);
+			return;
+		}
+		p=p->next;
+	}
+	printf("未找到想要删除学号\n");
+}
+void add(link *head,int posno,int newno){
+	link *p=head->next;
+	while(p!=NULL){
+		if(p->no==posno) break;
+		p=p->next;
+	}
+	if(p==NULL){
+		printf("为找到%d\n",posno);
+		return;
+	}
+	link *temp=(link*)malloc(sizeof(link));
+	temp->no=newno;
+	temp->next=p->next;
+	p->next=temp;
+	printf("成功在%d后面插入%d\n",posno,newno);
+}
+void Freelist(link *head){
+	link *p=head;
+	link *q;
+	while(p!=NULL){
+		q=p->next;
+		free(p);
+		p=q;
+	}
+}
+int main(){
+	int a,b;
+	link *head=(link*)malloc(sizeof(link));
+	head->next=NULL;
+	link *tail=head;
+	create_node(tail);
+	printf("---------------------\n");
+	show(head);
+	printf("---------------------\n");
+	printf("请输入要删除学号:");
+	scanf("%d",&a);
+	sss(head,a);
+	show(head);
+	printf("---------------------\n"); 
+	printf("请输入想要在a后添加b(示例a b):");
+	scanf("%d %d",&a,&b);
+	add(head,a,b);
+	show(head);
+	Freelist(head);
+	return 0;
+}
