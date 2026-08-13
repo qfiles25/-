@@ -51,7 +51,7 @@ void add(link *head,int posno,int newno){
 		p=p->next;
 	}
 	if(p==NULL){//未找到对应学号退出并提示
-		printf("为找到%d\n",posno);
+		printf("未找到%d\n",posno);
 		return;
 	}
 	link *temp=(link*)malloc(sizeof(link));
